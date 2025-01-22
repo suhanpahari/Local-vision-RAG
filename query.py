@@ -14,7 +14,7 @@ pc = Pinecone(api_key=api_key)
 index_name = "vision-rag"
 index = pc.Index(index_name)
 
-# Function to search for similar images and return their paths
+# Function to search for si milar images and return their paths
 def search_images(query, top_k=5):
     query_embedding = embed_text(query)
     results = index.query(queries=[query_embedding], top_k=top_k)

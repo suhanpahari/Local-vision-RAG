@@ -15,7 +15,7 @@ index_name = "vision-rag"
 if index_name not in [idx.name for idx in pc.list_indexes()]:
     pc.create_index(
         name=index_name,
-        dimension=512,  # Adjust this to match your embedding dimensions
+        dimension=512,  # Adjus t this to match your embedding dimensions
         metric="cosine",  # Use cosine similarity for CLIP embeddings
         spec=ServerlessSpec(cloud="aws", region=environment)  # Correct the region
     )

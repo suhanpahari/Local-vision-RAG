@@ -6,7 +6,7 @@ import torch
 
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-model.eval()  # Set to evaluation mode
+model.eval()  # Set to eval uation mode
 
 
 def embed_image(image_path):
