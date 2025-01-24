@@ -1,9 +1,9 @@
-from embedding import embed_images_in_folder
-from vector import save_embeddings_to_pinecone
+from embed_chr import embed_images_in_folder
+from vector_chr import save_embeddings_to_chroma
 
 folder_path = "img"
 embeddings = embed_images_in_folder(folder_path)
-save_embeddings_to_pinecone(embeddings, folder_path)
+save_embeddings_to_chroma(embeddings)
 
 # Example  usage
 '''if __name__ == "__main__":
