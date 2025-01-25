@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multimodal Image Search</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 32px;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .input-card {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            flex: 1;
+        }
+
+        .input-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:hover {
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .chat-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            max-width: 80%;
+            line-height: 1.5;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: auto;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .bot-message {
+            background: #f8fafc;
+            color: #2d3748;
+            border: 1px solid #e2e8f0;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            gap: 1rem;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+        }
+
+        .status {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .success {
+            background-color: #c6f6d5;
+            color: #276749;
+        }
+
+        .error {
+            background-color: #fed7d7;
+            color: #9b2c2c;
+        }
+
+        .image-result {
+            margin-top: 0.5rem;
+            max-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-result img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="logo">Multimodal Image Search</h1>
+            <div class="input-section">
+                <div class="input-card">
+                    <h2 class="section-title">📁 Folder Path</h2>
+                    <input type="text" id="folderPathInput" placeholder="Enter folder path">
+                    <button id="processFolderButton">Process Folder</button>
+                    <div id="folderStatus" class="status"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">👋 Welcome! Enter a folder path to start searching images.</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Ask me anything about the images..." disabled>
+                <button id="sendButton" disabled>Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#processFolderButton').on('click', function() {
+                const folderPath = $('#folderPathInput').val();
+                
+                $.ajax({
+                    url: '/process_folder',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ folderPath: folderPath }),
+                    success: function(response) {
+                        if (response.success) {
+                            $('#folderStatus').removeClass('error').addClass('success').text(response.message);
+                            $('#messageInput').prop('disabled', false);
+                            $('#sendButton').prop('disabled', false);
+                            
+                            // Add processing success message to chat
+                            $('#chatMessages').append(`
+                                <div class="message bot-message">
+                                    ✅ ${response.message}. You can now search images!
+                                </div>
+                            `);
+                            scrollToBottom();
+                        } else {
+                            $('#folderStatus').removeClass('success').addClass('error').text(response.message);
+                        }
+                    },
+                    error: function() {
+                        $('#folderStatus').removeClass('success').addClass('error').text('Error processing folder');
+                    }
+                });
+            });
+
+            $('#sendButton').on('click', searchImages);
+            $('#messageInput').on('keypress', function(e) {
+                if (e.which == 13) searchImages();
+            });
+
+            function scrollToBottom() {
+                $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+            }
+
+            function searchImages() {
+                const query = $('#messageInput').val();
+                if (!query) return;
+
+                // Add user message to chat
+                $('#chatMessages').append(`
+                    <div class="message user-message">
+                        ${query}
+                    </div>
+                `);
+
+                // Clear input
+                $('#messageInput').val('');
+
+                // Search images
+                $.ajax({
+                    url: '/search_images',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ query: query }),
+                    success: function(response) {
+                        // Add bot response to chat
+                        $('#chatMessages').append(`
+                            <div class="message bot-message">
+                                Here are the most relevant images for "${query}":
+                            </div>
+                        `);
+
+                        // Add images to chat messages
+                        response.images.forEach((base64Image, index) => {
+                            $('#chatMessages').append(`
+                                <div class="message bot-message">
+                                    <div class="image-result">
+                                        <img src="data:image/png;base64,${base64Image}" alt="Retrieved Image ${index + 1}">
+                                    </div>
+                                </div>
+                            `);
+                        });
+
+                        // Scroll to bottom of chat
+                        scrollToBottom();
+                    },
+                    error: function() {
+                        $('#chatMessages').append(`
+                            <div class="message bot-message">
+                                Sorry, I couldn't retrieve images for that query.
+                            </div>
+                        `);
+                        scrollToBottom();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

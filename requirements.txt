@@ -1,0 +1,7 @@
+# requirements.txt
+flask==2.1.0
+chromadb==0.4.15
+torch==2.0.1
+open-clip-torch==2.20.0
+matplotlib==3.7.1
+Pillow==9.5.0

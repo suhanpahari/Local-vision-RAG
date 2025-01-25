@@ -1,8 +1,8 @@
 import chromadb
 from chromadb.utils.embedding_functions import OpenCLIPEmbeddingFunction
 
-# Initialize ChromaDB client
-client = chromadb.Client()
+# Initialize ChromaDB client with persistent storage
+client = chromadb.PersistentClient(path="chroma_db")  # Data will be stored in the "chroma_db" folder
 
 # Create or load a collection
 collection = client.get_or_create_collection(
@@ -24,6 +24,9 @@ def save_embeddings_to_chroma(embeddings):
     collection.add(ids=ids, embeddings=embeddings_list, metadatas=metadatas)
     print(f"Saved {len(ids)} embeddings to ChromaDB.")  # Debugging
 
+    # Verify the collection count
+    print(f"Number of items in collection after saving: {collection.count()}")
+    
 def query_chroma(query_embedding, top_k=5):
     """Query ChromaDB for the nearest images."""
     results = collection.query(query_embeddings=[query_embedding], n_results=top_k)

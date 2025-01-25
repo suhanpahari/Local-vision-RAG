@@ -1,4 +1,4 @@
-from vector_chr import collection
+from app import collection
 
 # Print the number of items in the collection
 print(f"Number of items in collection: {collection.count()}")
