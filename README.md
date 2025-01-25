@@ -17,7 +17,7 @@ This project is a **local image search system** that enables users to search for
 
   
 
-![Image](https://github.com/user-attachments/assets/4abeccc6-2cd0-4ac7-a83f-ff6417b05f0b)
+<img src="https://github.com/user-attachments/assets/4abeccc6-2cd0-4ac7-a83f-ff6417b05f0b" alt="Image" width="400">
 
   
 
@@ -33,7 +33,9 @@ This project is a **local image search system** that enables users to search for
 
 -  **Scalable Storage:** Efficiently stores and retrieves embeddings using ChromaDB.
 
-  ![Image](https://github.com/user-attachments/assets/1f3b6276-7779-433f-b8a8-3e77be0af1b0)
+
+<img src="https://github.com/user-attachments/assets/1f3b6276-7779-433f-b8a8-3e77be0af1b0" alt="Image" width="400">
+
 
 ## Project Structure
 
