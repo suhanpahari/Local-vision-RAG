@@ -126,6 +126,7 @@ This project is licensed under the MIT License. See the [LICENSE](https://chatgp
 
 ## Contributing
 
+Developed by [Soham Pahari](https://suhanxd.github.io/).
 Contributions are welcome! Feel free to fork the repository and submit a pull request.
 
 ## Acknowledgments
